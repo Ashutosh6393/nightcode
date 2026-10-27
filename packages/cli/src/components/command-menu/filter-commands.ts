@@ -1,8 +1,8 @@
 import type { Command } from "./types";
-import { COMMANDS } from "./command";
-
+import { COMMANDS } from "./commands";
 
 export function getFilteredCommands(query: string): Command[] {
-    if (!query) return COMMANDS;
-    return COMMANDS.filter((command) => command.name.toLowerCase().includes(query.toLowerCase()));
-}
+  if (query.length === 0) return COMMANDS;
+  return COMMANDS
+    .filter((cmd) => cmd.name.toLowerCase().startsWith(query.toLowerCase()));
+};
