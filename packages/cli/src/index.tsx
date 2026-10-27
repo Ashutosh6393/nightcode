@@ -1,26 +1,22 @@
-import { createCliRenderer, TextAttributes } from "@opentui/core";
+import { createCliRenderer } from "@opentui/core";
 import { createRoot } from "@opentui/react";
-import { Header } from "./components/header";
-// import { StatusBar } from "./components/status-bar";
-import { InputBar } from "./components/input-bar";
+import { createMemoryRouter, RouterProvider } from "react-router";
+import { RootLayout } from "./layouts/root-layout";
+import { Home } from "./screens/home";
+import { NewSession } from "./screens/new-session";
+import { Session } from "./screens/session";
 
-function App() {
-  return (
-    <box
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      width={"100%"}
-      height={"100%"}
-      gap={2}
-    >
-      <Header />
-      <box width={"100%"} maxWidth={78} paddingX={2}>
-        <InputBar onSubmit={() => {}} disabled={false} />
-      </box>
-    </box>
-  );
-}
+const router = createMemoryRouter([
+  {
+    path: "/",
+    element: <RootLayout />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: "sessions/new", element: <NewSession /> },
+      { path: "sessions/:id", element: <Session /> },
+    ],
+  },
+]);
 
-const renderer = await createCliRenderer();
-createRoot(renderer).render(<App />);
+const renderer = await createCliRenderer({targetFps: 60, exitOnCtrlC: false});
+createRoot(renderer).render(<RouterProvider router={router} />);
